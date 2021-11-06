@@ -1,0 +1,46 @@
+version: '3.2'
+services:
+  mysql:
+    image: mysql/mysql-server
+    restart: always
+    container_name: dockercomposespringbootmysqlredis-mysql
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+      - ./mysql/init:/docker-entrypoint-initdb.d/
+    ports:
+      - '3336:3306'  #“宿主机端口号：容器内端口号”
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: test  # 创建普通用户
+      MYSQL_PASSWORD: 12345     #普通用户密码
+      MYSQL_DATABASE: docker-compose-springboot-mysql-redis  #创建一个库
+  redis:
+    #官方的Redis镜像image
+    image: redis
+    #指定容器名称
+    container_name: dockercomposespringbootmysqlredis-redis
+    #restart: always
+    command: redis-server --requirepass root
+    ports:
+      - "7379:6379"
+    #挂载数据卷
+    #Redis 的密码需要自己在与容器共享的配置 redis.conf 中加入，即更改配置中 requirepass 为: requirepass yourpassword
+    volumes:
+      - ./redis/data:/data
+  #指定服务名称
+  springboot:
+    # 镜像名:版本
+    #自己构建的镜像，当前路径Dockerfile
+    build: .
+    #打包之后的镜像名字
+    image: dockercomposespringbootmysqlredis:v1.0.0
+    container_name: dockercomposespringbootmysqlredis-springboot
+    #restart: always
+    #指定服务运行的端口
+    ports:
+      - "8899:8899"
+    #依赖的服务
+    depends_on:
+      - mysql
+      - redis
