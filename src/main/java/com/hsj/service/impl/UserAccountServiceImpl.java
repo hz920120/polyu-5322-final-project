@@ -3,6 +3,7 @@ package com.hsj.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hsj.entity.UserAccount;
+import com.hsj.entity.request.LoginReq;
 import com.hsj.entity.request.RegisterReq;
 import com.hsj.mapper.UserAccountMapper;
 import com.hsj.service.UserAccountService;
@@ -35,6 +36,15 @@ public class UserAccountServiceImpl extends ServiceImpl<UserAccountMapper, UserA
         BeanUtils.copyProperties(req, userAccount);
         int res = baseMapper.insert(userAccount);
         return res == 1;
+    }
+
+    @Override
+    public Boolean login(LoginReq req) {
+        String password = req.getPassword();
+        QueryWrapper<UserAccount> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(UserAccount::getUsername, req.getUsername());
+        UserAccount userAccount = baseMapper.selectOne(queryWrapper);
+        return password.equals(userAccount.getPassword());
     }
 }
 

@@ -1,5 +1,6 @@
 package com.hsj.controller;
 
+import com.hsj.entity.request.LoginReq;
 import com.hsj.entity.request.RegisterReq;
 import com.hsj.redis.Redis;
 import com.hsj.service.UserAccountService;
@@ -59,6 +60,38 @@ public class AccountController {
         } else {
             result.setCode(40000);
             result.setMsg("Registration failed.");
+            return result;
+        }
+    }
+
+    @PostMapping("/twitter/login")
+    public RestResult<String> login(@RequestBody LoginReq loginReq){
+        RestResult result = new RestResult();
+        String username = loginReq.getUsername();
+        String password = loginReq.getPassword();
+
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+            result.setCode(40001);
+            result.setMsg("Wrong username or password!");
+            return result;
+        }
+
+        //check where username exists
+        if (!userAccountService.isUserAccountExist(username)) {
+            result.setCode(40003);
+            result.setMsg("Username doesn't exist, please register first!");
+            return result;
+        }
+
+        //if not exist, register
+        boolean res = userAccountService.login(loginReq);
+        if (res) {
+            result.setCode(200);
+            result.setMsg("Login success");
+            return result;
+        } else {
+            result.setCode(40000);
+            result.setMsg("Wrong password.");
             return result;
         }
     }

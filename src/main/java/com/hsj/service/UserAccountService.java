@@ -1,5 +1,6 @@
 package com.hsj.service;
 
+import com.hsj.entity.request.LoginReq;
 import com.hsj.entity.request.RegisterReq;
 
 /**
@@ -13,4 +14,6 @@ public interface UserAccountService {
     Boolean isUserAccountExist(String username);
 
     Boolean register(RegisterReq req);
+
+    Boolean login(LoginReq req);
 }
