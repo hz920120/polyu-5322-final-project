@@ -2,7 +2,7 @@ version: '3.2'
 services:
   mysql:
     image: mysql/mysql-server
-    restart: always
+#    restart: always
     container_name: dockercomposespringbootmysqlredis-mysql
     volumes:
       - ./mysql/data:/var/lib/mysql
