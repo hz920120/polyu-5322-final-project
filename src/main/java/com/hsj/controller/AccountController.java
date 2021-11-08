@@ -1,15 +1,15 @@
 package com.hsj.controller;
 
+import com.hsj.entity.request.RegisterReq;
 import com.hsj.redis.Redis;
-import com.hsj.service.UserService;
+import com.hsj.service.UserAccountService;
 import com.hsj.wrapper.RestResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 
 /**
  * @author HUANG Zuo
@@ -21,7 +21,7 @@ import java.util.HashMap;
 public class AccountController {
 
     @Resource
-    private UserService userService;
+    private UserAccountService userAccountService;
     @Resource
     private Redis redis;
 
@@ -31,12 +31,36 @@ public class AccountController {
      * @param userId
      * @return
      */
-    @GetMapping("/twitter/register")
-    public RestResult getUserInfo(@RequestParam Long userId){
-        return RestResult.ok(new HashMap<String,Object>(){{
-            put("redis_memory_result",redis.incr("dockercomposespringbootmysqlredis:v1.0.0", 1L));
-            put("mysql_db_result",userService.getById(userId));
-        }});
+    @PostMapping("/twitter/register")
+    public RestResult<String> register(@RequestBody RegisterReq registerReq){
+        RestResult result = new RestResult();
+        String username = registerReq.getUsername();
+        String password = registerReq.getPassword();
+
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+            result.setCode(40001);
+            result.setMsg("Wrong username or password!");
+            return result;
+        }
+
+        //check where username exists
+        if (userAccountService.isUserAccountExist(username)) {
+            result.setCode(40002);
+            result.setMsg("Username is already registered!");
+            return result;
+        }
+
+        //if not exist, register
+        boolean res = userAccountService.register(registerReq);
+        if (res) {
+            result.setCode(200);
+            result.setMsg("success");
+            return result;
+        } else {
+            result.setCode(40000);
+            result.setMsg("Registration failed.");
+            return result;
+        }
     }
 }
 
