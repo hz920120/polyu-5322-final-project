@@ -6,6 +6,7 @@ import com.hsj.entity.request.FollowReq;
 import com.hsj.mapper.FollowMapper;
 import com.hsj.service.FollowService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 /**
  * @author HUANG Zuo
@@ -13,6 +14,7 @@ import org.springframework.beans.BeanUtils;
  * @declaration
  * @e-mail hz920120@gmail.com
  */
+@Service
 public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> implements FollowService {
 
     @Override

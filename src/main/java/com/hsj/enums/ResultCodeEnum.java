@@ -40,11 +40,11 @@ public enum ResultCodeEnum implements ResultCode {
 
     @Override
     public int getCode() {
-        return -1;
+        return code;
     }
 
     @Override
     public String getMsg() {
-        return null;
+        return msg;
     }
 }

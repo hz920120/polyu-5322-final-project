@@ -9,6 +9,7 @@ import com.hsj.entity.request.ReplyToTweetReq;
 import com.hsj.mapper.RepliesMapper;
 import com.hsj.service.RepliesService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * @declaration
  * @e-mail hz920120@gmail.com
  */
+@Service
 public class RepliesServiceImpl extends ServiceImpl<RepliesMapper, Replies> implements RepliesService {
 
     @Override
