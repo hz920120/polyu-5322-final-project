@@ -1,7 +1,7 @@
 package com.hsj.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hsj.entity.UserAccount;
+import com.hsj.entity.Tweets;
 
 /**
  * @author HUANG Zuo
@@ -9,6 +9,6 @@ import com.hsj.entity.UserAccount;
  * @declaration
  * @e-mail hz920120@gmail.com
  */
-public interface TweetsMapper extends BaseMapper<UserAccount> {
+public interface TweetsMapper extends BaseMapper<Tweets> {
 
 }

@@ -1,8 +1,9 @@
 package com.hsj.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hsj.entity.UserAccount;
+import com.hsj.entity.Tweets;
 import com.hsj.entity.request.LoginReq;
+import com.hsj.entity.request.NewTweetReq;
 import com.hsj.entity.request.RegisterReq;
 
 /**
@@ -11,11 +12,7 @@ import com.hsj.entity.request.RegisterReq;
  * @declaration
  * @e-mail hz920120@gmail.com
  */
-public interface UserAccountService extends IService<UserAccount> {
+public interface TweetsService extends IService<Tweets> {
 
-    Boolean isUserAccountExist(String username);
-
-    Boolean register(RegisterReq req);
-
-    Boolean login(LoginReq req);
+    Boolean newTweets(NewTweetReq req);
 }
